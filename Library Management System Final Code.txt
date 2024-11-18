@@ -1,0 +1,1415 @@
+import javax.swing.*;
+import java.awt.*;
+import javax.swing.border.Border;
+import javax.swing.border.LineBorder;
+import java.io.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.io.BufferedWriter;
+import java.io.FileWriter;
+import java.io.IOException;
+import javax.swing.table.DefaultTableModel;
+import java.awt.event.*;  
+import javax.swing.JComboBox;
+
+public class Library_Management_System {
+
+	
+    	public static void main(String[] args) {
+    		
+    		// Create a JFrame instance
+	        JFrame frame = new JFrame("Library Management System");
+	        
+	        // Set the size of the window (width: 1000, height: 650)
+	        frame.setSize(1000, 650);
+	        
+	        // Set the default close operation to exit the application
+	        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	        
+	        // Get the content pane and set the background color
+	        frame.getContentPane().setBackground(Color.decode("#e9d6c7"));
+	        
+	        // Set the layout manager to null for custom positioning
+	        frame.setLayout(null);
+	        
+	        // Create another JPanel with white background and size 420x475
+	        JPanel whitePanel = new JPanel();
+	        whitePanel.setBackground(Color.WHITE);
+	        
+	        // Set the border with color #302919
+	        Border border = new LineBorder(Color.decode("#302919"), 2); // 2px border
+	        whitePanel.setBorder(border);
+	        
+	        // Set the new panel's size and position (centered)
+	        int whitePanelWidth = 420;
+	        int whitePanelHeight = 475;
+	        int whitePanelX = 310;
+	        int whitePanelY = 70;
+	        whitePanel.setBounds(whitePanelX, whitePanelY, whitePanelWidth, whitePanelHeight);
+	        
+	        // Create a new panel named "logopanel" to be added inside the whitePanel
+	        @SuppressWarnings("serial")
+	        JPanel logopanel = new JPanel() {
+	            @Override
+	            protected void paintComponent(Graphics g) {
+	                super.paintComponent(g);
+	                // Load the image from the specified path for the logo
+	                ImageIcon logo = new ImageIcon("C:\\Users\\JAYGAB\\Desktop\\bookslogo.jpg");
+	                // Draw the image inside the logopanel
+	                g.drawImage(logo.getImage(), 0, 0, getWidth(), getHeight(), this);
+	            }
+	        };
+	        
+	        logopanel.setBackground(Color.decode("#402c21")); // A background color for the logo panel
+	        
+	        // Set the position and size of the logopanel inside whitePanel
+	        int logoPanelWidth = 155;
+	        int logoPanelHeight = 110;
+	        int logoPanelX = 10; // Position it inside whitePanel
+	        int logoPanelY = 15; // Set the vertical position
+	        logopanel.setBounds(logoPanelX, logoPanelY, logoPanelWidth, logoPanelHeight);
+	        
+	        // Set the layout of whitePanel to null for custom positioning inside whitePanel
+	        whitePanel.setLayout(null);
+	        
+	        // Add logopanel to the whitePanel
+	        whitePanel.add(logopanel);
+	        
+	        // Create a label next to the logo inside the logopanel
+	        JLabel label = new JLabel("Library ");
+	        label.setFont(new Font("Arial", Font.BOLD, 30)); // Set font for the label to 24px size
+	        label.setForeground(Color.decode("#fb630b")); // Set text color to #fb630b
+	        label.setBounds(logoPanelX + logoPanelWidth + 10, 35, 150, 30); // Position label next to logo
+	        
+	        // Create a label next to the logo inside the logopanel
+	        JLabel label2 = new JLabel("Management System ");
+	        label2.setFont(new Font("Arial", Font.BOLD, 20)); // Set font size to 18
+	        label2.setForeground(Color.decode("#fb630b")); // Set text color to #fb630b
+	        label2.setBounds(logoPanelX + logoPanelWidth + 10, 65, 250, 30); // Position label next to logo
+	        
+	        // Add the label to the whitePanel (which is inside logopanel)
+	        whitePanel.add(label);
+	        whitePanel.add(label2);
+	        
+	        // Create the Username label and text field
+	        JLabel usernameLabel = new JLabel("Username: ");
+	        usernameLabel.setFont(new Font("Arial", Font.BOLD, 14)); // Set font size
+	        usernameLabel.setForeground(Color.decode("#fc7c04")); // Set text color to #fc9f5f
+	        usernameLabel.setBounds(50, 185, 100, 30); // Position below the labels
+	        
+	        JTextField usernameField = new JTextField();
+	        usernameField.setFont(new Font("Arial", Font.PLAIN, 14)); // Set font size
+	        usernameField.setBounds(150, 185, 200, 30); // Position beside the label
+	        usernameField.setBorder(BorderFactory.createLineBorder(Color.decode("#fd9e69"))); // Set border color to #fd9e69
+	        usernameField.setForeground(Color.decode("#964522")); // Set the text color inside the username field
+
+	        // Add Username label and text field to the whitePanel
+	        whitePanel.add(usernameLabel);
+	        whitePanel.add(usernameField);
+	        
+	        // Create the Password label and text field
+	        JLabel passwordLabel = new JLabel("Password: ");
+	        passwordLabel.setFont(new Font("Arial", Font.BOLD, 14)); // Set font size
+	        passwordLabel.setForeground(Color.decode("#fc7c04")); // Set text color to #fc9f5f
+	        passwordLabel.setBounds(50, 230, 100, 30); // Position below the labels
+	        
+	        JPasswordField passwordField = new JPasswordField();
+	        passwordField.setFont(new Font("Arial", Font.PLAIN, 14)); // Set font size
+	        passwordField.setBounds(150, 230, 200, 30); // Position beside the label
+	        passwordField.setBorder(BorderFactory.createLineBorder(Color.decode("#fd9e69"))); // Set border color to #fd9e69
+	        passwordField.setForeground(Color.decode("#964522")); // Set the text color inside the password field
+
+	        // Add Password label and text field to the whitePanel
+	        whitePanel.add(passwordLabel);
+	        whitePanel.add(passwordField);
+	        
+	        // Create the Login button
+	        JButton loginButton = new JButton("Login");
+	        loginButton.setFont(new Font("Arial", Font.BOLD, 14)); // Set font for the button
+	        loginButton.setBounds(150, 280, 120, 30); // Position the button below the Show Password checkbox
+	        loginButton.setBackground(Color.decode("#fc7c04")); // Set the background color of the button
+	        loginButton.setForeground(Color.WHITE); // Set the text color to white
+
+	        loginButton.addActionListener(new ActionListener() {
+	            @Override
+	            public void actionPerformed(ActionEvent event) {
+	                // Get the username and password input by the user
+	                String username = usernameField.getText().trim();
+	                
+	                // Get the password (use getPassword() for JPasswordField)
+	                char[] passwordCharArray = passwordField.getPassword();
+	                String password = new String(passwordCharArray).trim();
+
+	                // Check if both fields are filled
+	                if (username.isEmpty() || password.isEmpty()) {
+	                    JOptionPane.showMessageDialog(frame, "Please enter both username and password!", "Error", JOptionPane.ERROR_MESSAGE);
+	                    return;
+	                }
+
+	                // File path where the account details are stored
+	                String filePath = "C:\\Users\\JAYGAB\\Desktop\\CreatedAccounts.txt";
+
+	                // Flag to check if username exists and password is correct
+	                boolean accountFound = false;
+	                boolean passwordCorrect = false;
+
+	                try {
+	                    // Open the file for reading
+	                    BufferedReader bufferedReader = new BufferedReader(new FileReader(filePath));
+
+	                    String line;
+	                    while ((line = bufferedReader.readLine()) != null) {
+	                        // Check if the line contains the username
+	                        if (line.contains("Username: " + username)) {
+	                            accountFound = true; // Username found
+	                            // Extract the password from the line
+	                            String storedPassword = line.split(", Password: ")[1];
+
+	                            // Compare the stored password with the input password
+	                            if (storedPassword.equals(password)) {
+	                                passwordCorrect = true;
+	                            }
+	                            break; // No need to continue checking further lines once the account is found
+	                        }
+	                    }
+
+	                    bufferedReader.close();
+
+	                    // Check if the account was found
+	                    if (!accountFound) {
+	                        JOptionPane.showMessageDialog(frame, "Account not found, please create an account first.", "Error", JOptionPane.ERROR_MESSAGE);
+	                    }
+	                    // Check if the password is correct
+	                    else if (!passwordCorrect) {
+	                        JOptionPane.showMessageDialog(frame, "Wrong Password!", "Error", JOptionPane.ERROR_MESSAGE);
+	                    }
+	                    // If both username and password are correct
+	                    else {
+	                        // Close the current login frame
+	                        frame.dispose();
+ 
+////Main Window
+////Main Window
+////Main Window
+	                        
+	                        // Create the new frame (1000x730)
+	                        JFrame MainFrame = new JFrame("Library Management System");
+	                        MainFrame.setSize(1275, 730); // Set the size of the frame
+	                        MainFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	                        MainFrame.getContentPane().setBackground(Color.decode("#e9d6c7")); // Set the background color of the frame
+
+	                        // Create the label
+	                        JLabel label = new JLabel("Table Transaction List");
+	                        label.setFont(new Font("Arial", Font.BOLD, 28)); // Set font to Arial, Bold, size 18
+	                        label.setForeground(Color.decode("#ed6b16")); // Set font color to #ed6b16
+
+	                        // Set the label's position and size
+	                        label.setBounds(600, 340, 300, 30); // X, Y, width, height (adjust values as needed)
+
+	                        // Add the label to the main frame
+	                        MainFrame.add(label);
+	                        
+	                        // Add any components to newFrame as needed
+	                        JLabel welcomeLabel = new JLabel("L.M.S");
+	                        welcomeLabel.setFont(new Font("Arial", Font.BOLD, 46));
+	                        welcomeLabel.setForeground(Color.decode("#f0660e")); // Set the text color to #f0660e
+	                        welcomeLabel.setBounds(35, 20, 400, 120); // Position of the welcome label
+	                        MainFrame.add(welcomeLabel);
+
+	                        // Add any components to newFrame as needed
+	                        JLabel userlabel = new JLabel(username);
+	                        userlabel.setFont(new Font("Arial", Font.PLAIN, 18));
+	                        userlabel.setForeground(Color.decode("#f0660e")); // Set the text color to #f0660e
+	                        userlabel.setBounds(35, 60, 400, 120); // Position of the welcome label
+	                        MainFrame.add(userlabel);
+
+	                        // Create a separator panel below userlabel
+	                        JPanel separator = new JPanel();
+	                        separator.setBackground(Color.decode("#aa581a")); // Set the separator color to #aa581a
+	                        separator.setBounds(35, 145, 150, 2); // Position and size of the separator (x, y, width, height)
+	                        MainFrame.add(separator); // Add the separator to the frame
+
+	                        // Create a panel with the color #fff9f1 (a light color)
+	                        JPanel customPanel = new JPanel();
+	                        customPanel.setBackground(Color.decode("#fff9f1")); // Set the background color to #fff9f1
+	                        customPanel.setBounds(0, 0, 220, 700); // Set the size and position using (x, y, width, height)
+	                        customPanel.setBorder(BorderFactory.createLineBorder(Color.decode("#885e3f"), 1));
+	                        MainFrame.add(customPanel); // Add the custom panel to the frame
+
+
+	                        // Create a button for Deleting Book and add it inside the custom panel
+	                        JButton Report = new JButton("Library Report");
+	                        Report.setFont(new Font("Arial", Font.PLAIN, 16));
+	                        Report.setBackground(Color.decode("#f0660e"));
+	                        Report.setForeground(Color.white);
+	                        Report.setBounds(30, 380, 160, 30); // Set the button position and size (x, y, width, height)
+	                        customPanel.setLayout(null); // Set layout to null for absolute positioning within the custom panel
+	                        customPanel.add(Report); // Add the button to the custom panel
+	                        
+	                        // Add an ActionListener for the Library Report button
+	                        Report.addActionListener(new ActionListener() {
+	                            @Override
+	                            public void actionPerformed(ActionEvent e) {
+	                                // Create a new JFrame for the Library Report
+	                                JFrame reportFrame = new JFrame("Library Report");
+	                                reportFrame.setSize(800, 600); // Set the size of the new frame
+	                                reportFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Close only this frame when clicking 'X'
+	                                reportFrame.getContentPane().setBackground(Color.decode("#e9d6c7")); // Set the background color
+	                                reportFrame.setLayout(null); // Use absolute positioning
+
+	                                // Title label for the report
+	                                JLabel reportTitleLabel = new JLabel("Library Report");
+	                                reportTitleLabel.setFont(new Font("Arial", Font.BOLD, 28));
+	                                reportTitleLabel.setForeground(Color.decode("#ed6b16"));
+	                                reportTitleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+	                                reportTitleLabel.setBounds(0, 20, 800, 50); // Position and size
+	                                reportFrame.add(reportTitleLabel);
+
+	                                // Example content for the report (you can replace this with actual data)
+	                                JTextArea reportContent = new JTextArea("Library Report Content Goes Here...");
+	                                reportContent.setFont(new Font("Arial", Font.PLAIN, 14));
+	                                reportContent.setEditable(false); // Make the content non-editable
+	                                JScrollPane scrollPane = new JScrollPane(reportContent);
+	                                scrollPane.setBounds(50, 100, 700, 400); // Position and size of the report content
+	                                reportFrame.add(scrollPane);
+
+	                                // Make the report frame visible
+	                                reportFrame.setVisible(true);
+	                            }
+	                        });
+
+	                        
+	                        
+	                        // Create a button for Viewing Book and add it inside the custom panel
+	                        JButton ViewBooks = new JButton("View Books");
+	                        ViewBooks.setFont(new Font("Arial", Font.PLAIN, 16));
+	                        ViewBooks.setBackground(Color.decode("#f0660e"));
+	                        ViewBooks.setForeground(Color.white);
+	                        ViewBooks.setBounds(30, 260, 160, 30); // Set the button position and size (x, y, width, height)
+	                        customPanel.setLayout(null); // Set layout to null for absolute positioning within the custom panel
+	                        customPanel.add(ViewBooks); // Add the button to the custom panel
+
+	                        // Add an action listener for the ViewBooks button
+	                        ViewBooks.addActionListener(new ActionListener() {
+	                            @Override
+	                            public void actionPerformed(ActionEvent e) {
+	                                
+	                            	// Create a new JFrame for viewing books
+	                                JFrame viewBooksFrame = new JFrame("View Books");
+	                                viewBooksFrame.setSize(1200, 700); // Set the size of the new frame
+	                                viewBooksFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Close only this frame when clicking 'X'
+	                                viewBooksFrame.getContentPane().setBackground(Color.decode("#e9d6c7")); // Optional background color
+	                                viewBooksFrame.setLayout(null); // Use absolute positioning
+
+	                                // Title label
+	                                JLabel titleLabel = new JLabel("List of Books");
+	                                titleLabel.setFont(new Font("Arial", Font.BOLD, 28));
+	                                titleLabel.setForeground(Color.decode("#ed6b16"));
+	                                titleLabel.setHorizontalAlignment(SwingConstants.CENTER);
+	                                titleLabel.setBounds(0, 20, 1200, 50); // Position and size
+	                                viewBooksFrame.add(titleLabel);
+
+	                                // Create the table model
+	                                String[] columnNames = { "Book Name", "Book ID", "Author", "Genre" };
+	                                DefaultTableModel tableModel = new DefaultTableModel(columnNames, 0); // Empty rows initially
+
+	                                // Add 7 books to the table
+	                                Object[][] booksData = {
+	                                    { "Dune", "2311", "Frank Herbert", "Sci-fi" },
+	                                    { "Pride and Prejudice", "2342", "Jane Austen", "Romance" },
+	                                    { "The Hunger Games", "5645", "Suzanne Collins", "Action" },
+	                                    { "Dracula", "4165", "Bram Stoker", "Horror" },
+	                                    { "The Hobbit", "9846", "J.R.R. Tolkien", "Fantasy" },
+	                                    { "1984", "6512", "George Orwell", "Sci-fi" },
+	                                    { "Jane Eyre", "1553", "Charlotte Brontë", "Romance" }
+	                                };
+
+	                                for (Object[] book : booksData) {
+	                                    tableModel.addRow(book);
+	                                }
+
+	                                
+	                                // Create the table
+	                                JTable booksTable = new JTable(tableModel);
+	                                booksTable.setFont(new Font("Arial", Font.PLAIN, 14));
+	                                booksTable.setRowHeight(30);
+	                                booksTable.getTableHeader().setFont(new Font("Arial", Font.BOLD, 16));
+	                                booksTable.getTableHeader().setBackground(Color.decode("#f0660e"));
+	                                booksTable.getTableHeader().setForeground(Color.WHITE);
+
+	                                // Add the table to a scroll pane
+	                                JScrollPane scrollPane = new JScrollPane(booksTable);
+	                                scrollPane.setBounds(50, 100, 1100, 500); // Position and size
+	                                viewBooksFrame.add(scrollPane);
+
+	                                // Make the new frame visible
+	                                viewBooksFrame.setVisible(true);
+	                            }
+	                        });
+               
+	                        // Create a button for deleting member and add it inside the custom panel
+	                        JButton DeleteMember = new JButton("Delete Member");
+	                        DeleteMember.setFont(new Font("Arial", Font.PLAIN, 16));
+	                        DeleteMember.setBackground(Color.decode("#f0660e"));
+	                        DeleteMember.setForeground(Color.white);
+	                        DeleteMember.setBounds(30, 320, 160, 30); // Set the button position and size (x, y, width, height)
+	                        customPanel.setLayout(null); // Set layout to null for absolute positioning within the custom panel
+	                        customPanel.add(DeleteMember); // Add the button to the custom panel
+	                       
+	                        // Create a button for Profile Information and add it inside the custom panel
+	                        JButton Infos = new JButton("Profile Information");
+	                        Infos.setFont(new Font("Arial", Font.PLAIN, 16));
+	                        Infos.setBackground(Color.decode("#f0660e"));
+	                        Infos.setForeground(Color.white);
+	                        Infos.setBounds(30, 200, 160, 30); // Set the button position and size (x, y, width, height)
+	                        customPanel.setLayout(null); // Set layout to null for absolute positioning within the custom panel
+	                        customPanel.add(Infos); // Add the button to the custom panel
+
+	                        // Add ActionListener to the Profile Information button
+	                        Infos.addActionListener(e -> {
+	                            
+	                        	// Create a new JFrame for Profile Information
+	                            JFrame profileFrame = new JFrame("Profile Information");
+	                            profileFrame.setSize(300, 200); // Set the size of the frame
+	                            profileFrame.getContentPane().setBackground(Color.decode("#e9d6c7")); // Set the background color
+	                            profileFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Allow closing this frame without exiting the app
+	                            profileFrame.setLayout(null); // Use absolute positioning
+
+	                            JLabel profileUsernameLabel = new JLabel("Username: " + username);
+	                            profileUsernameLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+	                            profileUsernameLabel.setBounds(30, 35, 200, 30); // Position the label
+	                            profileFrame.add(profileUsernameLabel);
+
+	                            JLabel profilePasswordLabel = new JLabel("Password: " + password);
+	                            profilePasswordLabel.setFont(new Font("Arial", Font.PLAIN, 18));
+	                            profilePasswordLabel.setBounds(30, 85, 250, 30); // Position the label
+	                            profileFrame.add(profilePasswordLabel);
+
+	                            // Add a button to close the profile window
+	                            JButton closeProfileButton = new JButton("Close");
+	                            closeProfileButton.setFont(new Font("Arial", Font.PLAIN, 16));
+	                            closeProfileButton.setBackground(Color.decode("#f0660e"));
+	                            closeProfileButton.setForeground(Color.white);
+	                            closeProfileButton.setBounds(230, 300, 140, 30); // Position and size of the button
+	                            closeProfileButton.addActionListener(closeEvent -> {
+	                                profileFrame.dispose(); // Close the profile frame
+	                            });
+	                            profileFrame.add(closeProfileButton);
+
+	                            // Make the profile frame visible
+	                            profileFrame.setVisible(true);
+	                        });
+
+	                        
+	                        // Create a button for user manual and add it inside the custom panel
+	                        JButton Manual = new JButton("User Manual");
+	                        Manual.setFont(new Font("Arial", Font.PLAIN, 16));
+	                        Manual.setBackground(Color.decode("#f0660e"));
+	                        Manual.setForeground(Color.white);
+	                        Manual.setBounds(30, 440, 160, 30); // Set the button position and size (x, y, width, height)
+	                        customPanel.setLayout(null); // Set layout to null for absolute positioning within the custom panel
+	                        customPanel.add(Manual); // Add the button to the custom panel
+
+	                        // Add ActionListener to the Manual button
+	                        Manual.addActionListener(e -> {
+	                            
+	                        	// Create a new JFrame for the User Manual
+	                            JFrame userManualFrame = new JFrame("User Manual");
+	                            userManualFrame.setSize(700, 500); // Set the size of the frame
+	                            userManualFrame.getContentPane().setBackground(Color.decode("#e9d6c7")); // Set the background color
+	                            userManualFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); // Allow closing this frame without exiting the app
+	                            userManualFrame.setLayout(null); // Use absolute positioning
+
+	                            // Create the User Manual Content in JLabel
+	                            String userManualText = "<html>" +
+	                                "<h2>User Manual for Library Management System (LMS)</h2>" +
+	                                "<p>Welcome to the Library Management System! This manual will guide you through using the application and performing essential tasks.</p>" +
+
+	                                "<h3>1. Logging In</h3>" +
+	                                "<p>To access the Library Management System, you need to log in with your <b>Username</b> and <b>Password</b>.</p>" +
+	                                "<ol>" +
+	                                "<li><b>Enter your Username</b> – Make sure it’s unique and not already used by another user.</li>" +
+	                                "<li><b>Enter your Password</b> – Ensure the password meets security requirements.</li>" +
+	                                "<li><b>Re-type your Password</b> – Confirm your password by entering it again to avoid mistakes.</li>" +
+	                                "<li><b>Click on the “Enter” button</b> – If everything is correct, you’ll be logged into the system.</li>" +
+	                                "</ol>" +
+	                                "<p><b>Error Handling</b>:</p>" +
+	                                "<ul>" +
+	                                "<li>If the <b>Username</b> is already in use, an error message will prompt you to choose another one.</li>" +
+	                                "<li>If the <b>Password</b> is already in use, you’ll be notified to select a different one.</li>" +
+	                                "<li>If the <b>Re-type Password</b> does not match the original, an error will appear asking you to re-enter it correctly.</li>" +
+	                                "</ul>" +
+
+	                                "<h3>2. Main Page Overview</h3>" +
+	                                "<p>After logging in successfully, you will be directed to the <b>Main Page</b> where you can access all the key features of the system.</p>" +
+	                                "<p><b>Main Menu Options:</b><ul>" +
+	                                "<li>Add Book</li>" +
+	                                "<li>Manage Member Information</li>" +
+	                                "<li>Issuing/Returning Book</li>" +
+	                                "<li>Search for Records</li>" +
+	                                "<li>View Books</li>" +
+	                                "<li>User Manual</li>" +
+	                                "<li>Library Report</li>" +
+	                                "<li>My Profile</li>" +
+	                                "<li>Logout</li>" +
+	                                "</ul></p>" +
+
+	                                "<h3>3. Add Book</h3>" +
+	                                "<p>To add a new book to the library database:</p>" +
+	                                "<ol>" +
+	                                "<li>Click the <b>Add Book</b> button on the left panel.</li>" +
+	                                "<li>Fill in the required information: Book Name, Book ID, Book Author.</li>" +
+	                                "<li>Once all fields are filled out, click <b>Add</b> to save the book record.</li>" +
+	                                "</ol>" +
+
+	                                "<h3>4. Manage Member Information</h3>" +
+	                                "<p>To manage library members:</p>" +
+	                                "<ol>" +
+	                                "<li>Click the <b>Manage Member Information</b> button.</li>" +
+	                                "<li>A list of current members will be displayed in the interface.</li>" +
+	                                "<li>You can add new members or edit existing member details. Information such as First Name, Last Name, Middle Name, Birth Date, Username, and Password is required for each member.</li>" +
+	                                "<li>Members are displayed in a treeview format with their names, ID, and College Department.</li>" +
+	                                "</ol>" +
+
+	                                "<h3>5. Issuing and Returning Books</h3>" +
+	                                "<p>To issue or return a book:</p>" +
+	                                "<ol>" +
+	                                "<li>Click the <b>Issuing/Returning Book</b> button.</li>" +
+	                                "<li>Select the member who is borrowing or returning a book.</li>" +
+	                                "<li>Enter the Book Name and Book ID.</li>" +
+	                                "<li>For issuing a book, set the Date Borrowed and the Date Due for return.</li>" +
+	                                "<li>For returning a book, enter the Date Returned and ensure the book is updated as returned in the system.</li>" +
+	                                "</ol>" +
+
+	                                "<h3>6. Search for Records</h3>" +
+	                                "<p>To search for specific books or member records:</p>" +
+	                                "<ol>" +
+	                                "<li>Click on the <b>Search</b> button in the main panel.</li>" +
+	                                "<li>You can search by Book Name, Book ID, Member Name, or other relevant details.</li>" +
+	                                "<li>Type the search term in the search field and hit <b>Enter</b> to find the relevant records.</li>" +
+	                                "<li>The results will be displayed, showing the current status (available, borrowed, overdue).</li>" +
+	                                "</ol>" +
+
+	                                "<h3>7. View Books</h3>" +
+	                                "<p>To view all books in the library:</p>" +
+	                                "<ol>" +
+	                                "<li>Click the <b>View Books</b> button.</li>" +
+	                                "<li>A list of all available books will appear, showing their Book Name, Book ID, and Book Author.</li>" +
+	                                "</ol>" +
+
+	                                "<h3>8. User Manual</h3>" +
+	                                "<p>If you ever need to access this manual again, simply click the <b>User Manual</b> button. This will open a new window with instructions and helpful tips for using the system.</p>" +
+
+	                                "<h3>9. Library Report</h3>" +
+	                                "<p>To generate a report of the library's activity:</p>" +
+	                                "<ol>" +
+	                                "<li>Click the <b>Library Report</b> button.</li>" +
+	                                "<li>A detailed report will be shown, including information on books issued, books returned, overdue books, and member activity.</li>" +
+	                                "</ol>" +
+
+	                                "<h3>10. My Profile</h3>" +
+	                                "<p>To view or edit your personal profile:</p>" +
+	                                "<ol>" +
+	                                "<li>Click the <b>My Profile</b> button.</li>" +
+	                                "<li>You can view or update details like: First Name, Last Name, Middle Name, Birth Date, Username, Password.</li>" +
+	                                "<li>Make sure to click <b>Save</b> if any changes are made.</li>" +
+	                                "</ol>" +
+
+	                                "<h3>11. Logout</h3>" +
+	                                "<p>To log out of the system, click the <b>Logout</b> button. You will be asked to confirm if you wish to log out. Upon confirming, you’ll be redirected to the login screen.</p>" +
+
+	                                "<h3>12. New Features (Coming Soon)</h3>" +
+	                                "<ul>" +
+	                                "<li><b>Overdue Notifications</b>: If a book is overdue, a notification will appear when trying to return the book, alerting the user about the overdue status.</li>" +
+	                                "<li><b>Member Management via Treeview</b>: Members will be added, and their information will be displayed in a treeview. The treeview will show the student's name, ID, and department.</li>" +
+	                                "<li><b>Detailed Member Information Table</b>: The member’s activity will be shown in a table with 7 columns: Student Name, Student ID, College Department, Book Borrowed, Date Borrowed, Date Returned, Status.</li>" +
+	                                "</ul>" +
+
+	                                "<h3>Conclusion</h3>" +
+	                                "<p>This manual provides the necessary steps for you to use the Library Management System efficiently. If you have any additional questions or encounter issues, please refer to the system's support or contact the admin for assistance.</p>" +
+	                                "<p>Notes: If you need more features or adjustments, feel free to explore the system's upcoming updates! Always make sure that your details are up-to-date, especially if you're a member of the library.</p>" +
+	                                "</html>";
+
+	                            // Create the JLabel to display the manual content
+	                            JLabel manualContent = new JLabel(userManualText);
+	                            manualContent.setFont(new Font("Arial", Font.PLAIN, 14)); // Adjust font size if needed
+	                            manualContent.setForeground(Color.BLACK); // Set text color
+	                            manualContent.setVerticalAlignment(SwingConstants.TOP); // Align text to the top of the label
+
+	                            // Wrap the content in a JScrollPane if the content exceeds the screen size
+	                            JScrollPane scrollPane = new JScrollPane(manualContent);
+	                            scrollPane.setBounds(20, 20, 660, 400); // Set size of the scrollable area
+
+	                            // Add the scroll pane to the User Manual frame
+	                            userManualFrame.add(scrollPane);
+	                            userManualFrame.setLayout(null);
+	                            userManualFrame.setVisible(true);
+	                        });
+
+            
+	                        // Create a button for logout and add it inside the custom panel
+	                        JButton Logout = new JButton("Logout");
+	                        Logout.setFont(new Font("Arial", Font.PLAIN, 16));
+	                        Logout.setBackground(Color.decode("#f0660e"));
+	                        Logout.setForeground(Color.white);
+	                        Logout.setBounds(30, 500, 160, 30); // Set the button position and size (x, y, width, height)
+	                        customPanel.setLayout(null); // Set layout to null for absolute positioning within the custom panel
+	                        customPanel.add(Logout); // Add the button to the custom panel
+
+	                        // Add ActionListener to the Logout button
+	                        Logout.addActionListener(e -> {
+	                            // Display a confirmation dialog
+	                            int confirm = JOptionPane.showConfirmDialog(
+	                                MainFrame,
+	                                "Are you sure you want to log out?",
+	                                "Logout Confirmation",
+	                                JOptionPane.YES_NO_OPTION
+	                            );
+
+	                            // Check the user's choice
+	                            if (confirm == JOptionPane.YES_OPTION) {
+	                                MainFrame.dispose(); // Close the current frame
+	                                
+	                                // Make the login frame visible again
+	                                frame.setVisible(true);
+	                            }
+	                        });
+                
+	                        // Set the layout to null for absolute positioning
+	                        MainFrame.setLayout(null);
+
+	                        // Make the new frame visible
+	                        MainFrame.setVisible(true);
+	               
+	                        
+////Manage Member Panel
+////Manage Member Panel
+////Manage Member Panel
+	                        
+	                        
+	                     // Define the DefaultTableModel for the JTable
+	                        DefaultTableModel tableModel = new DefaultTableModel(new Object[][] {}, new String[] {
+	                            "Student Name", "Student ID", "College Department", "Book ID", "Date Borrowed", "Date Returned", "Status"
+	                        });
+
+	                        // Create the panel for Manage Member or Adding Member
+	                        JPanel ManageMember = new JPanel();
+	                        ManageMember.setLayout(null); // Use null layout for absolute positioning
+	                        ManageMember.setBounds(300, 30, 420, 300); // Adjusted height to fit the button
+	                        ManageMember.setBackground(Color.decode("#fff9f1"));
+	                        ManageMember.setBorder(BorderFactory.createLineBorder(Color.decode("#885e3f"), 1));
+
+	                        // Create a label for "Manage Member"
+	                        JLabel ManageLabel = new JLabel("Manage Member", SwingConstants.CENTER);
+	                        ManageLabel.setFont(new Font("Arial", Font.BOLD, 21)); 
+	                        ManageLabel.setForeground(Color.decode("#f0660e"));
+	                        ManageLabel.setBounds(0, 10, 420, 30);
+
+	                        // Add the Manage Label to the ManageMember panel
+	                        ManageMember.add(ManageLabel);
+
+	                        // Create a label and text field for "Student Name"
+	                        JLabel studentNameLabel = new JLabel("Student Name:");
+	                        studentNameLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+	                        studentNameLabel.setBounds(20, 70, 100, 30);
+	                        JTextField studentNameField = new JTextField(20);
+	                        studentNameField.setBounds(150, 70, 250, 30);
+
+	                        // Create a label and text field for "Student ID"
+	                        JLabel studentIDLabel = new JLabel("Student ID:");
+	                        studentIDLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+	                        studentIDLabel.setBounds(20, 120, 100, 30);
+	                        JTextField studentIDField = new JTextField(20);
+	                        studentIDField.setBounds(150, 120, 250, 30);
+
+	                        // Create a label and combo box for "College Dept."
+	                        JLabel collegeDeptLabel = new JLabel("College Dept.:");
+	                        collegeDeptLabel.setFont(new Font("Arial", Font.PLAIN, 14));
+	                        collegeDeptLabel.setBounds(20, 170, 150, 30);
+	                        String[] collegeDepts = {"COE", "CCS", "COED", "CHAS", "CAS", "Other"};
+	                        JComboBox<String> collegeDeptComboBox = new JComboBox<>(collegeDepts);
+	                        collegeDeptComboBox.setBounds(150, 170, 250, 30);
+
+	                        // Create the "Add Member" button
+	                        JButton AddMemberButton = new JButton("Add Member");
+	                        AddMemberButton.setFont(new Font("Arial", Font.PLAIN, 16)); 
+	                        AddMemberButton.setBackground(Color.decode("#f0660e")); 
+	                        AddMemberButton.setForeground(Color.white); 
+	                        AddMemberButton.setBounds(150, 230, 150, 30);
+
+	                        // Add the labels, fields, and button to the ManageMember panel
+	                        ManageMember.add(studentNameLabel);
+	                        ManageMember.add(studentNameField);
+	                        ManageMember.add(studentIDLabel);
+	                        ManageMember.add(studentIDField);
+	                        ManageMember.add(collegeDeptLabel);
+	                        ManageMember.add(collegeDeptComboBox);
+	                        ManageMember.add(AddMemberButton);
+
+	                        // Add the ManageMember panel to the main frame
+	                        MainFrame.add(ManageMember);
+
+	                 
+////Add Book Panel
+////Add Book Panel
+////Add Book Panel               
+	                        
+	                        
+	                        // Create a panel for Adding Books
+	                        JPanel AddBook = new JPanel();
+	                        AddBook.setLayout(null); // Use null layout for absolute positioning
+	                        AddBook.setBounds(760, 30, 420, 300); // Adjust height to fit the components
+	                        AddBook.setBackground(Color.decode("#fff9f1"));
+	                        AddBook.setBorder(BorderFactory.createLineBorder(Color.decode("#885e3f"), 1));
+
+	                        // Create a label for "Add Books"
+	                        JLabel AddingBooksLabel = new JLabel("Add Books", SwingConstants.CENTER); // Center-align the text
+	                        AddingBooksLabel.setFont(new Font("Arial", Font.BOLD, 21)); // Set font to bold and size 18
+	                        AddingBooksLabel.setForeground(Color.decode("#f0660e")); // Set font color to #f0660e
+	                        AddingBooksLabel.setBounds(0, 10, 420, 30); // Set bounds to position the label at the top
+
+	                        // Add the AddingBooksLabel to the AddBook panel
+	                        AddBook.add(AddingBooksLabel);
+
+	                        // Create a label for "Book Name"
+	                        JLabel bookNameLabel = new JLabel("Book Name:");
+	                        bookNameLabel.setFont(new Font("Arial", Font.PLAIN, 14)); // Set plain font
+	                        bookNameLabel.setBounds(20, 70, 100, 25); // Position and size
+	                        AddBook.add(bookNameLabel); // Add to the panel
+
+	                        // Create a text field for "Book Name"
+	                        JTextField bookNameField = new JTextField();
+	                        bookNameField.setBounds(150, 70, 200, 25); // Position and size for text field
+	                        AddBook.add(bookNameField); // Add to the panel
+
+	                        // Create a label for "Book ID"
+	                        JLabel bookIDLabel = new JLabel("Book ID:");
+	                        bookIDLabel.setFont(new Font("Arial", Font.PLAIN, 14)); // Set plain font
+	                        bookIDLabel.setBounds(20, 110, 100, 25); // Position and size
+	                        AddBook.add(bookIDLabel); // Add to the panel
+
+	                        // Create a text field for "Book ID"
+	                        JTextField bookIDField = new JTextField();
+	                        bookIDField.setBounds(150, 110, 200, 25); // Position and size for text field
+	                        AddBook.add(bookIDField); // Add to the panel
+
+	                        // Create a label for "Book Author"
+	                        JLabel bookAuthorLabel = new JLabel("Book Author:");
+	                        bookAuthorLabel.setFont(new Font("Arial", Font.PLAIN, 14)); // Set plain font
+	                        bookAuthorLabel.setBounds(20, 150, 100, 25); // Position and size
+	                        AddBook.add(bookAuthorLabel); // Add to the panel
+
+	                        // Create a text field for "Book Author"
+	                        JTextField bookAuthorField = new JTextField();
+	                        bookAuthorField.setBounds(150, 150, 200, 25); // Position and size for text field
+	                        AddBook.add(bookAuthorField); // Add to the panel
+
+	                        // Create a label for "Book Genre"
+	                        JLabel bookGenreLabel = new JLabel("Book Genre:");
+	                        bookGenreLabel.setFont(new Font("Arial", Font.PLAIN, 14)); // Set plain font
+	                        bookGenreLabel.setBounds(20, 190, 100, 25); // Position and size
+	                        AddBook.add(bookGenreLabel); // Add to the panel
+
+	                        // Create a text field for "Book Genre"
+	                        JTextField bookGenreField = new JTextField();
+	                        bookGenreField.setBounds(150, 190, 200, 25); // Position and size for text field
+	                        AddBook.add(bookGenreField); // Add to the panel
+
+	                        // Create the "Add Book" button
+	                        JButton AddBookButton = new JButton("Add Book");
+	                        AddBookButton.setFont(new Font("Arial", Font.PLAIN, 16)); // Set font to plain, size 16
+	                        AddBookButton.setBackground(Color.decode("#f0660e")); // Set background color
+	                        AddBookButton.setForeground(Color.white); // Set text color
+	                        AddBookButton.setBounds(150, 230, 120, 30); // Set position and size of the button
+	                        
+	                        // Add ActionListener for "Add Book" button
+	                        AddBookButton.addActionListener(new ActionListener() {
+	                            @Override
+	                            public void actionPerformed(ActionEvent e) {
+	                                // Get values from the text fields
+	                                String bookName = bookNameField.getText();
+	                                String bookID = bookIDField.getText();
+	                                String bookAuthor = bookAuthorField.getText();
+	                                String bookGenre = bookGenreField.getText();
+
+	                                // Check if any of the fields are empty
+	                                if (bookName.isEmpty() || bookID.isEmpty() || bookAuthor.isEmpty() || bookGenre.isEmpty()) {
+	                                    // Show an error message if any field is empty
+	                                    JOptionPane.showMessageDialog(null, "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
+	                                } else {
+	                                    // Check if the Book ID contains only numbers
+	                                    try {
+	                                        Integer.parseInt(bookID);  // Try to convert bookID to an integer
+
+	                                        // If the Book ID is valid, proceed with writing to file
+	                                        try {
+	                                            // Create a FileWriter to append the data to the file
+	                                            FileWriter writer = new FileWriter("C:\\Users\\JAYGAB\\Desktop\\addedbooks.txt", true);
+
+	                                            // Write book details to the file
+	                                            writer.write("Book Name: " + bookName + "\n");
+	                                            writer.write("Book ID: " + bookID + "\n");
+	                                            writer.write("Book Author: " + bookAuthor + "\n");
+	                                            writer.write("Book Genre: " + bookGenre + "\n");
+	                                            writer.write("---------------------------------\n");
+
+	                                            // Close the writer
+	                                            writer.close();
+
+	                                            // Show a confirmation message
+	                                            JOptionPane.showMessageDialog(null, "Book added successfully!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+	                                            // Clear the fields after saving
+	                                            bookNameField.setText("");
+	                                            bookIDField.setText("");
+	                                            bookAuthorField.setText("");
+	                                            bookGenreField.setText("");
+
+	                                        } catch (IOException ex) {
+	                                            // Handle any file I/O errors
+	                                            JOptionPane.showMessageDialog(null, "An error occurred while saving the book.", "Error", JOptionPane.ERROR_MESSAGE);
+	                                            ex.printStackTrace();
+	                                        }
+	                                    } catch (NumberFormatException ex) {
+	                                        // Show an error message if the Book ID is not a valid number
+	                                        JOptionPane.showMessageDialog(null, "Please enter a valid numeric Book ID.", "Invalid Input", JOptionPane.ERROR_MESSAGE);
+	                                    }
+	                                }
+	                            }
+	                        });
+
+
+	                        
+
+	                        // Add the AddBookButton to the AddBook panel
+	                        AddBook.add(AddBookButton);
+
+	                        // Add the AddBook panel to the main frame
+	                        MainFrame.add(AddBook);
+
+
+
+
+
+////Library Transactions Table 
+////Library Transactions Table
+////Library Transactions Table 
+	                        
+	                        // Create a panel to hold the table
+	                        JPanel tablePanel = new JPanel();
+	                        tablePanel.setLayout(new BorderLayout());
+	                        tablePanel.setBounds(300, 375, 880, 280);
+	                        MainFrame.add(tablePanel);
+
+	                        // Create the JTable with the tableModel
+	                        JTable tabletransactionlist = new JTable(tableModel);
+	                        tabletransactionlist.setFont(new Font("Arial", Font.PLAIN, 14));
+	                        tabletransactionlist.setRowHeight(30);
+	                        tabletransactionlist.getTableHeader().setBackground(Color.decode("#f0660e")); // Header background color
+	                        tabletransactionlist.getTableHeader().setForeground(Color.WHITE); // Header text color
+	                        tabletransactionlist.setSelectionBackground(Color.decode("#f0660e"));
+	                        tabletransactionlist.setSelectionForeground(Color.WHITE);
+
+	                        // Add the table to a scroll pane
+	                        JScrollPane scrollPane = new JScrollPane(tabletransactionlist);
+	                        tablePanel.add(scrollPane, BorderLayout.CENTER);
+
+	                        // Add a MouseListener to detect clicks on rows in the table
+	                        tabletransactionlist.addMouseListener(new MouseAdapter() {
+	                            @Override
+	                            public void mouseClicked(MouseEvent e) {
+	                                int selectedRow = tabletransactionlist.getSelectedRow();
+	                                if (selectedRow != -1) { // If a row is clicked
+	                                    int option = JOptionPane.showConfirmDialog(MainFrame, 
+	                                        "Do you want to edit a transaction?", 
+	                                        "Edit Transaction", 
+	                                        JOptionPane.YES_NO_OPTION);
+
+	                                    if (option == JOptionPane.YES_OPTION) {
+	                                        // Create a new window for editing the transaction
+	                                        JFrame TransactionWindow = new JFrame("Edit Transaction");
+	                                        TransactionWindow.setSize(400, 600);
+	                                        TransactionWindow.setLocationRelativeTo(MainFrame);
+	                                        TransactionWindow.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+
+	                                        // Set the background color of the edit window
+	                                        TransactionWindow.getContentPane().setBackground(Color.decode("#e9d6c8"));
+
+	                                        // Create a new panel with a #fff9f3 background
+	                                        JPanel panel = new JPanel();
+	                                        panel.setBackground(Color.decode("#fff9f3"));
+	                                        panel.setLayout(null);  // Use null layout to manually position components
+
+	                                        // Create and position "Student Name" label and text field
+	                                        JLabel STUDENTNAME = new JLabel("Student Name:");
+	                                        STUDENTNAME.setBounds(40, 50, 100, 30); // Position and size of the label
+	                                        panel.add(STUDENTNAME);
+
+	                                        JTextField STUDENTNAMEFIELD = new JTextField();
+	                                        STUDENTNAMEFIELD.setBounds(150, 50, 200, 30); // Position and size of the text field
+	                                        panel.add(STUDENTNAMEFIELD);
+
+	                                        // Create and position "Student ID" label and text field
+	                                        JLabel STUDENTID = new JLabel("Student ID:");
+	                                        STUDENTID.setBounds(40, 100, 100, 30); // Position and size of the label
+	                                        panel.add(STUDENTID);
+
+	                                        JTextField STUDENTIDFIELD = new JTextField();
+	                                        STUDENTIDFIELD.setBounds(150, 100, 200, 30); // Position and size of the text field
+	                                        panel.add(STUDENTIDFIELD);
+
+	                                        // Create and position "College Dept." label and text field
+	                                        JLabel COLLEGEDEPT = new JLabel("College Dept.:");
+	                                        COLLEGEDEPT.setBounds(40, 150, 100, 30); // Position and size of the label
+	                                        panel.add(COLLEGEDEPT);
+
+	                                        JTextField COLLEGEDEPTFIELD = new JTextField();
+	                                        COLLEGEDEPTFIELD.setBounds(150, 150, 200, 30); // Position and size of the text field
+	                                        panel.add(COLLEGEDEPTFIELD);
+
+	                                        // Pre-fill the fields with values from the selected row
+	                                        STUDENTNAMEFIELD.setText((String) tabletransactionlist.getValueAt(selectedRow, 0));  // Student Name
+	                                        STUDENTIDFIELD.setText((String) tabletransactionlist.getValueAt(selectedRow, 1));    // Student ID
+	                                        COLLEGEDEPTFIELD.setText((String) tabletransactionlist.getValueAt(selectedRow, 2));  // College Dept.
+
+	                                        // Create and position "Book ID" label and text field
+	                                        JLabel bookIDLabel = new JLabel("Book ID:");
+	                                        bookIDLabel.setBounds(40, 200, 100, 30); // Position and size of the label
+	                                        panel.add(bookIDLabel);
+
+	                                        JTextField bookIDField = new JTextField();
+	                                        bookIDField.setBounds(150, 200, 200, 30); // Position and size of the text field
+	                                        panel.add(bookIDField);
+
+	                                        // Create and position "Date Borrowed" label and text field
+	                                        JLabel dateBorrowedLabel = new JLabel("Date Borrowed:");
+	                                        dateBorrowedLabel.setBounds(40, 250, 100, 30); // Position and size of the label
+	                                        panel.add(dateBorrowedLabel);
+
+	                                        JTextField dateBorrowedField = new JTextField();
+	                                        dateBorrowedField.setBounds(150, 250, 200, 30); // Position and size of the text field
+	                                        panel.add(dateBorrowedField);
+
+	                                        // Create and position "Date Returned" label and text field
+	                                        JLabel dateReturnedLabel = new JLabel("Date Returned:");
+	                                        dateReturnedLabel.setBounds(40, 300, 100, 30); // Position and size of the label
+	                                        panel.add(dateReturnedLabel);
+
+	                                        JTextField dateReturnedField = new JTextField();
+	                                        dateReturnedField.setBounds(150, 300, 200, 30); // Position and size of the text field
+	                                        panel.add(dateReturnedField);
+
+	                                        // Create and position "Status" label and text field
+	                                        JLabel statusLabel = new JLabel("Status:");
+	                                        statusLabel.setBounds(40, 350, 100, 30); // Position and size of the label
+	                                        panel.add(statusLabel);
+
+	                                        JTextField statusField = new JTextField();
+	                                        statusField.setBounds(150, 350, 200, 30); // Position and size of the text field
+	                                        panel.add(statusField);
+
+	                                        // Create the Submit button
+	                                        JButton submitTransactionButton = new JButton("Submit");
+
+	                                        // Set the font, background, and foreground as specified
+	                                        submitTransactionButton.setFont(new Font("Arial", Font.PLAIN, 16)); // Set font to plain, size 16
+	                                        submitTransactionButton.setBackground(Color.decode("#f0660e")); // Set background color
+	                                        submitTransactionButton.setForeground(Color.white); // Set text color
+
+	                                        // Set the position and size of the Submit button
+	                                        submitTransactionButton.setBounds(150, 400, 100, 30); // Adjust position and size as needed
+
+	                                        // Add the Submit button to the panel
+	                                        panel.add(submitTransactionButton);
+
+	                                        // Add the panel to the frame
+	                                        TransactionWindow.add(panel);
+
+	                                        // Make the window visible
+	                                        TransactionWindow.setVisible(true);
+
+	                                        // Handle the submit button action
+	                                        submitTransactionButton.addActionListener(new ActionListener() {
+	                                            public void actionPerformed(ActionEvent e) {
+	                                                // Get the values from the fields
+	                                                String studentName = STUDENTNAMEFIELD.getText();
+	                                                String studentID = STUDENTIDFIELD.getText();
+	                                                String collegeDept = COLLEGEDEPTFIELD.getText();
+	                                                String bookID = bookIDField.getText();
+	                                                String dateBorrowed = dateBorrowedField.getText();
+	                                                String dateReturned = dateReturnedField.getText();
+	                                                String status = statusField.getText();
+
+	                                                // Validate inputs (optional)
+	                                                if (studentName.isEmpty() || studentID.isEmpty() || collegeDept.isEmpty()) {
+	                                                    JOptionPane.showMessageDialog(TransactionWindow, "Please fill in all required fields.", "Error", JOptionPane.ERROR_MESSAGE);
+	                                                    return;
+	                                                }
+
+	                                                // Update the table row with the new values
+	                                                DefaultTableModel model = (DefaultTableModel) tabletransactionlist.getModel();
+	                                                model.setValueAt(studentName, selectedRow, 0);  // Student Name
+	                                                model.setValueAt(studentID, selectedRow, 1);    // Student ID
+	                                                model.setValueAt(collegeDept, selectedRow, 2);  // College Dept.
+	                                                model.setValueAt(bookID, selectedRow, 3);       // Book ID
+	                                                model.setValueAt(dateBorrowed, selectedRow, 4); // Date Borrowed
+	                                                model.setValueAt(dateReturned, selectedRow, 5); // Date Returned
+	                                                model.setValueAt(status, selectedRow, 6);       // Status
+
+	                                                // Close the edit window after saving
+	                                                TransactionWindow.dispose();
+	                                            }
+	                                        });
+
+	                                    	
+	                                    	// Add the Submit button to the panel
+	                                    	panel.add(submitTransactionButton);
+
+	                                    	// Add the panel to the frame
+	                                    	TransactionWindow.add(panel);
+
+	                                    	// Make the window visible
+	                                    	TransactionWindow.setVisible(true);
+
+	                                    }
+	                                }
+	                            }
+	                        });
+	                        
+	                        // Add the ManageMember panel to the main frame
+	                        MainFrame.add(ManageMember);
+
+	                        AddMemberButton.addActionListener(new ActionListener() {
+	                            public void actionPerformed(ActionEvent e) {
+	                                String studentName = studentNameField.getText();
+	                                String studentID = studentIDField.getText();
+	                                String collegeDept = (String) collegeDeptComboBox.getSelectedItem();
+
+	                                // Validate input
+	                                if (studentName.isEmpty() || studentID.isEmpty() || collegeDept == null) {
+	                                    JOptionPane.showMessageDialog(null, "Please fill in all fields.", "Error", JOptionPane.ERROR_MESSAGE);
+	                                    return;
+	                                }
+
+	                                // Validate that Student ID is a number
+	                                try {
+	                                    Integer.parseInt(studentID); // This will throw an exception if the input is not a number
+	                                } catch (NumberFormatException ex) {
+	                                    JOptionPane.showMessageDialog(null, "Student ID must be a number.", "Error", JOptionPane.ERROR_MESSAGE);
+	                                    return;
+	                                }
+
+	                                // Validate that Student Name does not contain numbers
+	                                if (studentName.matches(".*\\d.*")) {
+	                                    JOptionPane.showMessageDialog(null, "Student Name cannot contain numbers.", "Error", JOptionPane.ERROR_MESSAGE);
+	                                    return;
+	                                }
+
+	                                // Add the student data to the JTable
+	                                DefaultTableModel model = (DefaultTableModel) tabletransactionlist.getModel();
+	                                model.addRow(new Object[]{studentName, studentID, collegeDept, "", "", "", ""});
+
+	                                // File path to save the data
+	                                String filePath = "C:\\Users\\JAYGAB\\Desktop\\addedmember.txt";
+
+	                                // Write the student data to the file
+	                                try (BufferedWriter writer = new BufferedWriter(new FileWriter(filePath, true))) {
+	                                    writer.write(studentName + "\t" + studentID + "\t" + collegeDept);
+	                                    writer.newLine(); // Add a newline after each entry
+	                                } catch (IOException ex) {
+	                                    JOptionPane.showMessageDialog(null, "An error occurred while saving the data.", "Error", JOptionPane.ERROR_MESSAGE);
+	                                    ex.printStackTrace();
+	                                }
+
+	                                // Clear the input fields after adding
+	                                studentNameField.setText("");
+	                                studentIDField.setText("");
+	                                collegeDeptComboBox.setSelectedIndex(0); // Reset to first item in combo box
+	                                
+	                                // Delete Member Button Action Listener
+	    	                        DeleteMember.addActionListener(new ActionListener() {
+	    	                            public void actionPerformed(ActionEvent e) {
+	    	                                // Prompt user to enter the Student ID to delete
+	    	                                String studentIDToDelete = JOptionPane.showInputDialog("Enter Student ID to delete:");
+
+	    	                                // If the user clicked 'Cancel', exit the method
+	    	                                if (studentIDToDelete == null || studentIDToDelete.isEmpty()) {
+	    	                                    return;
+	    	                                }
+
+	    	                                // Loop through the rows of the table to find the Student ID
+	    	                                DefaultTableModel model = (DefaultTableModel) tabletransactionlist.getModel(); // Correct JTable reference
+	    	                                boolean found = false;
+
+	    	                                for (int i = 0; i < model.getRowCount(); i++) {
+	    	                                    String studentID = (String) model.getValueAt(i, 1); // Assuming student ID is in the second column
+
+	    	                                    if (studentID.equals(studentIDToDelete)) {
+	    	                                        // If Student ID matches, remove the row
+	    	                                        model.removeRow(i);
+	    	                                        found = true;
+	    	                                        break; // Exit the loop once the row is removed
+	    	                                    }
+	    	                                }
+
+	    	                                // If no matching Student ID is found, show an error message
+	    	                                if (!found) {
+	    	                                    JOptionPane.showMessageDialog(null, "Student ID not found.", "Error", JOptionPane.ERROR_MESSAGE);
+	    	                                }
+	    	                            }
+	    	                        });
+
+	                            }
+	                        });
+	  
+	                    }  
+	                } catch (IOException e) {
+	                    JOptionPane.showMessageDialog(frame, "An error occurred while reading the account file!", "Error", JOptionPane.ERROR_MESSAGE);
+	                    e.printStackTrace();
+	                }
+	            }
+	        });
+
+
+	        // Add the Login button to the whitePanel
+	        whitePanel.add(loginButton);
+	        
+	        // Add the horizontal separator below the login button
+	        JSeparator separator = new JSeparator(SwingConstants.HORIZONTAL);
+	        separator.setBounds(50, 350, 300, 10); // Position it below the Login button
+	        separator.setForeground(Color.decode("#8d3e14")); // Set the separator color
+	        whitePanel.add(separator);
+	        
+	        // Create a label for "Don't have an account?"
+	        JLabel accountLabel = new JLabel("Don't have an account?");
+	        accountLabel.setFont(new Font("Arial", Font.PLAIN, 14)); // Set font size and style
+	        accountLabel.setForeground(Color.decode("#fc7c04")); // Set text color to match theme
+	        accountLabel.setBounds(50, 365, 200, 30); // Set position below the separator
+	        whitePanel.add(accountLabel);
+
+	        // Create a "Create Account" label that acts as a clickable link
+	        JLabel createAccountLabel = new JLabel("Create Account");
+	        createAccountLabel.setFont(new Font("Arial", Font.BOLD, 14)); // Bold font for emphasis
+	        createAccountLabel.setForeground(Color.decode("#99431a")); // Set text color to match theme
+	        createAccountLabel.setCursor(new Cursor(Cursor.HAND_CURSOR)); // Change cursor to hand on hover
+	        createAccountLabel.setBounds(210, 365, 120, 30); // Position next to the "Don't have an account?" label
+	        createAccountLabel.setForeground(Color.decode("#be6b44")); // Set text color to match theme
+
+	        createAccountLabel.addMouseListener(new java.awt.event.MouseAdapter() {
+	            @Override
+	            public void mouseClicked(java.awt.event.MouseEvent e) {
+	                // Create a new dialog for terms and conditions
+	                JDialog termsDialog = new JDialog(frame, "Terms and Conditions", true); // Modal dialog
+	                termsDialog.setSize(500, 400);
+	                termsDialog.setLayout(null);
+	                termsDialog.getContentPane().setBackground(Color.decode("#f7efe8")); // Background color
+	                
+	                // Create a scrollable text area for the terms and conditions
+	                JTextArea termsTextArea = new JTextArea();
+	                termsTextArea.setText("Terms and Conditions:\n\n"
+	                        + "1. General Use: The library management system is provided for the purpose of managing library resources, including borrowing, returning, and searching for books.\n\n"
+	                        + "2. User Responsibilities:\n"
+	                        + "   a. Users are responsible for maintaining the confidentiality of their login credentials.\n"
+	                        + "   b. Any activity conducted using your account is your responsibility.\n"
+	                        + "   c. Users must notify the library administrator immediately if they suspect unauthorized use of their account.\n\n"
+	                        + "3. Borrowing Policies:\n"
+	                        + "   a. Borrowed books must be returned by the due date to avoid penalties.\n"
+	                        + "   b. Users are responsible for the care and preservation of borrowed items.\n"
+	                        + "   c. Lost or damaged books must be reported and compensated for as per library policies.\n\n"
+	                        + "4. Privacy Statement:\n"
+	                        + "   a. The system collects personal information necessary for account creation and book transactions.\n"
+	                        + "   b. User data is stored securely and will not be shared without consent, except as required by law.\n\n"
+	                        + "5. System Use Policy:\n"
+	                        + "   a. Unauthorized access or misuse of the system is strictly prohibited.\n"
+	                        + "   b. Users must not attempt to alter, damage, or access system data for which they are not authorized.\n\n"
+	                        + "6. Penalties and Suspension:\n"
+	                        + "   a. Failure to comply with these terms may result in temporary or permanent suspension of library privileges.\n"
+	                        + "   b. Penalties for overdue books or damage will be applied as determined by the library administration.\n\n"
+	                        + "7. Amendments:\n"
+	                        + "   a. The library reserves the right to modify these terms and conditions at any time.\n"
+	                        + "   b. Users will be notified of significant changes through system announcements or email.\n\n"
+	                        + "8. Disclaimer:\n"
+	                        + "   a. The library is not responsible for system downtimes or data loss caused by technical issues.\n"
+	                        + "   b. Use of the system is at the user's own risk.\n\n"
+	                        + "By using this system, you acknowledge that you have read, understood, and agreed to the terms and conditions stated above.");
+	                
+	                termsTextArea.setFont(new Font("Arial", Font.PLAIN, 12));
+	                termsTextArea.setEditable(false); // Prevent editing
+	                termsTextArea.setWrapStyleWord(true);
+	                termsTextArea.setLineWrap(true);
+
+	                // Add scroll pane for terms text area
+	                JScrollPane scrollPane = new JScrollPane(termsTextArea);
+	                scrollPane.setBounds(20, 20, 460, 250);
+	                termsDialog.add(scrollPane);
+	                
+	                // Add a checkbox for agreement
+	                JCheckBox agreeCheckBox = new JCheckBox("I certify that I've read and accept the terms of use and privacy statement.");
+	                agreeCheckBox.setBounds(20, 280, 460, 30);
+	                agreeCheckBox.setBackground(Color.decode("#f7efe8")); // Match background
+	                termsDialog.add(agreeCheckBox);
+	                
+	                // Add a button to proceed
+	                JButton proceedButton = new JButton("Proceed");
+	                proceedButton.setBounds(200, 330, 100, 30);
+	                proceedButton.setEnabled(false); // Initially disabled
+	                proceedButton.setBackground(Color.decode("#fc7c04"));
+	                proceedButton.setForeground(Color.WHITE);
+	                termsDialog.add(proceedButton);
+
+	                // Enable the Proceed button only when the checkbox is checked
+	                agreeCheckBox.addActionListener(event -> {
+	                    proceedButton.setEnabled(agreeCheckBox.isSelected());
+	                });
+
+	                // Add action listener for the Proceed button
+	                proceedButton.addActionListener(event -> {
+	                    JOptionPane.showMessageDialog(termsDialog, "Proceeding to account creation...");
+	                    termsDialog.dispose(); // Close the dialog
+	                    
+	                    // Dispose of the existing main frame
+	                    frame.dispose();
+
+	                    // Create a new frame
+	                    JFrame newFrame = new JFrame("Create Account");
+	                    newFrame.setSize(550, 400);
+	                    newFrame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+	                    newFrame.getContentPane().setBackground(Color.decode("#e9d6c7"));
+	                    newFrame.setLayout(null);
+
+	                    // Add components to the new frame as needed
+	                    JLabel welcomeLabel = new JLabel("Create Account");
+	                    welcomeLabel.setFont(new Font("Arial", Font.BOLD, 22));
+	                    welcomeLabel.setForeground(Color.decode("#302919"));
+	                    welcomeLabel.setBounds(30, 20, 400, 30);
+	                    newFrame.add(welcomeLabel);
+
+	                    // Create a separator below the "Create Account" welcome label
+	                    JSeparator welcomeLabelSeparator = new JSeparator(SwingConstants.HORIZONTAL);
+	                    welcomeLabelSeparator.setBounds(20, 55, 400, 10); // Position it below the welcomeLabel
+	                    welcomeLabelSeparator.setForeground(Color.decode("#8d3e14")); // Set the separator color
+	                    newFrame.add(welcomeLabelSeparator);
+
+	                    // Full Name Label
+	                    JLabel fullnamelabel = new JLabel("Full Name");
+	                    fullnamelabel.setFont(new Font("Arial", Font.BOLD, 16));
+	                    fullnamelabel.setForeground(Color.decode("#302919"));
+	                    fullnamelabel.setBounds(30, 70, 400, 30);
+	                    newFrame.add(fullnamelabel);
+
+	                    // Firstname field
+	                    JTextField FirstNameField = new JTextField();
+	                    FirstNameField.setFont(new Font("Arial", Font.PLAIN, 12)); // Set font size
+	                    FirstNameField.setBounds(30, 100, 120, 20); // Position beside the label
+	                    FirstNameField.setBorder(BorderFactory.createLineBorder(Color.decode("#fd9e69"))); // Set border color to #fd9e69
+	                    FirstNameField.setForeground(Color.decode("#964522")); // Set the text color inside the username field
+	                    newFrame.add(FirstNameField);
+
+	                    // Lastname field
+	                    JTextField LastNameField = new JTextField();
+	                    LastNameField.setFont(new Font("Arial", Font.PLAIN, 12)); // Set font size
+	                    LastNameField.setBounds(160, 100, 120, 20); // Position beside the label
+	                    LastNameField.setBorder(BorderFactory.createLineBorder(Color.decode("#fd9e69"))); // Set border color to #fd9e69
+	                    LastNameField.setForeground(Color.decode("#964522")); // Set the text color inside the username field
+	                    newFrame.add(LastNameField);
+
+	                    // Middlename field
+	                    JTextField MiddleNameField = new JTextField();
+	                    MiddleNameField.setFont(new Font("Arial", Font.PLAIN, 12)); // Set font size
+	                    MiddleNameField.setBounds(290, 100, 120, 20); // Position beside the label
+	                    MiddleNameField.setBorder(BorderFactory.createLineBorder(Color.decode("#fd9e69"))); // Set border color to #fd9e69
+	                    MiddleNameField.setForeground(Color.decode("#964522")); // Set the text color inside the username field
+	                    newFrame.add(MiddleNameField);
+
+	                    // First Name Label
+	                    JLabel firstnamelabel = new JLabel("First Name");
+	                    firstnamelabel.setFont(new Font("Arial", Font.PLAIN, 12));
+	                    firstnamelabel.setForeground(Color.decode("#302919"));
+	                    firstnamelabel.setBounds(30, 120, 400, 30);
+	                    newFrame.add(firstnamelabel);
+
+	                    // Last Name Label
+	                    JLabel lastnamelabel = new JLabel("Last Name");
+	                    lastnamelabel.setFont(new Font("Arial", Font.PLAIN, 12));
+	                    lastnamelabel.setForeground(Color.decode("#302919"));
+	                    lastnamelabel.setBounds(160, 120, 400, 30);
+	                    newFrame.add(lastnamelabel);
+
+	                    // Middle Name Label
+	                    JLabel middlenamelabel = new JLabel("Middle Name");
+	                    middlenamelabel.setFont(new Font("Arial", Font.PLAIN, 12));
+	                    middlenamelabel.setForeground(Color.decode("#302919"));
+	                    middlenamelabel.setBounds(290, 120, 400, 30);
+	                    newFrame.add(middlenamelabel);
+
+	                    // Account Details Label
+	                    JLabel AccountDetailslabel = new JLabel("Account Details");
+	                    AccountDetailslabel.setFont(new Font("Arial", Font.BOLD, 16));
+	                    AccountDetailslabel.setForeground(Color.decode("#302919"));
+	                    AccountDetailslabel.setBounds(30, 160, 400, 30);
+	                    newFrame.add(AccountDetailslabel);
+
+	                    // Username field
+	                    JTextField UsernameCreateField = new JTextField();
+	                    UsernameCreateField.setFont(new Font("Arial", Font.PLAIN, 12)); // Set font size
+	                    UsernameCreateField.setBounds(30, 190, 170, 20); // Position beside the label
+	                    UsernameCreateField.setBorder(BorderFactory.createLineBorder(Color.decode("#fd9e69"))); // Set border color to #fd9e69
+	                    UsernameCreateField.setForeground(Color.decode("#964522")); // Set the text color inside the username field
+	                    newFrame.add(UsernameCreateField);
+
+	                    // Username Label
+	                    JLabel UsernameCreateLabel = new JLabel("Username");
+	                    UsernameCreateLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+	                    UsernameCreateLabel.setForeground(Color.decode("#302919"));
+	                    UsernameCreateLabel.setBounds(30, 205, 400, 30);
+	                    newFrame.add(UsernameCreateLabel);
+
+	                    // Password field
+	                    JTextField PasswordCreateField = new JTextField();
+	                    PasswordCreateField.setFont(new Font("Arial", Font.PLAIN, 12)); // Set font size
+	                    PasswordCreateField.setBounds(30, 235, 170, 20); // Position beside the label
+	                    PasswordCreateField.setBorder(BorderFactory.createLineBorder(Color.decode("#fd9e69"))); // Set border color to #fd9e69
+	                    PasswordCreateField.setForeground(Color.decode("#964522")); // Set the text color inside the username field
+	                    newFrame.add(PasswordCreateField);
+
+	                    // Password Label
+	                    JLabel PasswordCreateLabel = new JLabel("Password");
+	                    PasswordCreateLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+	                    PasswordCreateLabel.setForeground(Color.decode("#302919"));
+	                    PasswordCreateLabel.setBounds(30, 250, 400, 30);
+	                    newFrame.add(PasswordCreateLabel);
+
+	                    // Re-type Password field
+	                    JTextField ReTypePasswordCreateField = new JTextField();
+	                    ReTypePasswordCreateField.setFont(new Font("Arial", Font.PLAIN, 12)); // Set font size
+	                    ReTypePasswordCreateField.setBounds(210, 235, 170, 20); // Position beside the label
+	                    ReTypePasswordCreateField.setBorder(BorderFactory.createLineBorder(Color.decode("#fd9e69"))); // Set border color to #fd9e69
+	                    ReTypePasswordCreateField.setForeground(Color.decode("#964522")); // Set the text color inside the username field
+	                    newFrame.add(ReTypePasswordCreateField);
+
+	                    // Re-type Password Label
+	                    JLabel RetypePasswordCreateLabel = new JLabel("Re-type your Password");
+	                    RetypePasswordCreateLabel.setFont(new Font("Arial", Font.PLAIN, 12));
+	                    RetypePasswordCreateLabel.setForeground(Color.decode("#302919"));
+	                    RetypePasswordCreateLabel.setBounds(210, 250, 400, 30);
+	                    newFrame.add(RetypePasswordCreateLabel);
+
+	                    // Submit Button
+	                    JButton submitButton = new JButton("Submit");
+	                    submitButton.setFont(new Font("Arial", Font.BOLD, 14));
+	                    submitButton.setBackground(Color.decode("#fd9e69"));
+	                    submitButton.setForeground(Color.decode("#302919"));
+	                    submitButton.setBounds(30, 290, 170, 30);
+	                    submitButton.setBorder(BorderFactory.createLineBorder(Color.decode("#c07403")));
+	                    submitButton.setFocusPainted(false);
+	                    newFrame.add(submitButton);
+	                    
+	                    submitButton.addActionListener(new ActionListener() {
+	                        @Override
+	                        public void actionPerformed(ActionEvent event) {
+	                            // Get input values
+	                            
+	                        	String username = UsernameCreateField.getText().trim();
+	                            String password = PasswordCreateField.getText().trim();
+	                            String retypePassword = ReTypePasswordCreateField.getText().trim();
+
+	                            // Input validation
+	                            if (username.isEmpty() || password.isEmpty() || retypePassword.isEmpty()) {
+	                                JOptionPane.showMessageDialog(newFrame, "All fields must be filled!", "Error", JOptionPane.ERROR_MESSAGE);
+	                            } else if (!password.equals(retypePassword)) {
+	                                JOptionPane.showMessageDialog(newFrame, "Passwords do not match!", "Error", JOptionPane.ERROR_MESSAGE);
+	                            } else {
+	                                try {
+	                                    // File path where the account details will be saved
+	                                    String filePath = "C:\\Users\\JAYGAB\\Desktop\\CreatedAccounts.txt";
+
+	                                    // Create a FileWriter object to append data to the file
+	                                    FileWriter fileWriter = new FileWriter(filePath, true);  // 'true' ensures appending
+
+	                                    // Create a BufferedWriter to write data in a more efficient way
+	                                    BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+
+	                                    // Write the username and password to the file
+	                                    bufferedWriter.write("Username: " + username + ", Password: " + password);
+	                                    bufferedWriter.newLine(); // Add a newline after each account
+	                                    bufferedWriter.close(); // Close the BufferedWriter
+
+	                                    // Show success message
+	                                    JOptionPane.showMessageDialog(newFrame, "Account Complete, You can Login now!", "Success", JOptionPane.INFORMATION_MESSAGE);
+
+	                                    // Close the "Create Account" frame
+	                                    newFrame.dispose();
+
+	                                    // Reopen the "Library Management System" frame
+	                                    frame.setVisible(true);
+	                                } catch (IOException e) {
+	                                    // Handle the exception if there's an error during file writing
+	                                    JOptionPane.showMessageDialog(newFrame, "An error occurred while saving the account!", "Error", JOptionPane.ERROR_MESSAGE);
+	                                    e.printStackTrace();
+	                                }
+	                            }
+	                        }
+	                    });
+
+
+	                    // Make the frame visible
+	                    newFrame.setVisible(true);
+	                });
+
+
+	                // Center the dialog relative to the frame
+	                termsDialog.setLocationRelativeTo(frame);
+	                termsDialog.setVisible(true);
+	            }
+
+	            @Override
+	            public void mouseEntered(java.awt.event.MouseEvent e) {
+	                createAccountLabel.setForeground(Color.RED); // Change color on hover
+	            }
+
+	            @Override
+	            public void mouseExited(java.awt.event.MouseEvent e) {
+	                createAccountLabel.setForeground(Color.BLUE); // Reset color when not hovering
+	            }
+	        });
+
+	        // Add the "Create Account" label to the white panel
+	        whitePanel.add(createAccountLabel);
+
+	        
+	        // Add the white panel first (it will be in the foreground)
+	        frame.add(whitePanel);
+	        
+	        // Create a custom JPanel instance with a background image
+	        @SuppressWarnings("serial")
+	        JPanel panel = new JPanel() {
+	            @Override
+	            protected void paintComponent(Graphics g) {
+	                super.paintComponent(g);
+	                // Load the image from the specified path
+	                ImageIcon background = new ImageIcon("C:\\Users\\JAYGAB\\Desktop\\librarybg.jpg");
+	                g.drawImage(background.getImage(), 0, 0, getWidth(), getHeight(), this);
+	            }
+	        };
+	        
+	        // Panel dimensions
+	        int panelWidth = 650;
+	        int panelHeight = 350;
+	        
+	        // Calculate the x and y positions to center the panel
+	        int x = (frame.getWidth() - panelWidth) / 2;
+	        int y = (frame.getHeight() - panelHeight) / 2 - 30; // Subtracting 30 for title bar height
+	        
+	        // Set the panel's position and size (x, y, width, height)
+	        panel.setBounds(x, y, panelWidth, panelHeight);
+	        
+	        // Add the background panel last (it will be in the background)
+	        frame.add(panel);
+	        
+	        // Make the window visible
+	        frame.setVisible(true);
+	    }
+	}
+    	
+    	        
+    	    	    	
